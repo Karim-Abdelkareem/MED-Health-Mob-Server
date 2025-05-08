@@ -8,7 +8,7 @@ import cartRouter from "./src/module/cart/cartRouter.js";
 import orderRouter from "./src/module/order/orderRouter.js";
 import messageRouter from "./src/socket/messageRouter.js";
 import gmRouter from "./src/module/GM/GMRoutes.js";
-
+import rRouter from "./src/module/Representative/RRouter.js";
 export const init = (app) => {
   app.get("/", (req, res) => {
     res.send("Hello Med-Health!");
@@ -22,6 +22,7 @@ export const init = (app) => {
   app.use("/api/orders", orderRouter);
   app.use("/api/messages/public", messageRouter);
   app.use("/api/gm", gmRouter);
+  app.use("/api/representatives", rRouter);
 
   // Handle unknown routes
   app.all(/(.*)/, (req, res, next) => {
