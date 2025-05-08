@@ -22,6 +22,7 @@ import { uploadBufferToCloudinary } from "../../utils/uploadToCloudinary.js";
 export const createUser = catchAsync(async (req, res, next) => {
   const {
     username,
+    email,
     password,
     pharmacyName,
     location,
@@ -48,6 +49,7 @@ export const createUser = catchAsync(async (req, res, next) => {
     : undefined;
   const user = new User({
     username,
+    email,
     password,
     pharmacyName,
     location,
