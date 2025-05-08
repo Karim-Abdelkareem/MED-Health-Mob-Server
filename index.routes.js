@@ -7,6 +7,7 @@ import productRouter from "./src/module/product/productRouter.js";
 import cartRouter from "./src/module/cart/cartRouter.js";
 import orderRouter from "./src/module/order/orderRouter.js";
 import messageRouter from "./src/socket/messageRouter.js";
+import gmRouter from "./src/module/GM/GMRoutes.js";
 
 export const init = (app) => {
   app.get("/", (req, res) => {
@@ -20,6 +21,7 @@ export const init = (app) => {
   app.use("/api/cart", cartRouter);
   app.use("/api/orders", orderRouter);
   app.use("/api/messages/public", messageRouter);
+  app.use("/api/gm", gmRouter);
 
   // Handle unknown routes
   app.all(/(.*)/, (req, res, next) => {

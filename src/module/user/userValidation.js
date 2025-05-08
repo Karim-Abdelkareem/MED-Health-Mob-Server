@@ -4,6 +4,10 @@ export const userValidationSchema = Joi.object({
     "string.empty": "Username is required",
     "any.required": "Username is required",
   }),
+  email: Joi.string().email().required().messages({
+    "string.empty": "Email is required",
+    "any.required": "Email is required",
+  }),
   password: Joi.string()
     .required()
     .pattern(
@@ -18,7 +22,7 @@ export const userValidationSchema = Joi.object({
         "Password must be at least 8 characters long, and must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
     }),
   role: Joi.string()
-    .valid("admin", "user", "general_manager", "representative")
+    .valid("admin", "user", "general-manager", "representative")
     .default("user"),
   debt: Joi.number().default(0),
   active: Joi.boolean().default(false),
