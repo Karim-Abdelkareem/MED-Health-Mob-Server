@@ -9,7 +9,7 @@ router
   .get(categoryController.getAllCategories)
   .post(
     protect,
-    restrictTo("admin", "general_manger"),
+    restrictTo("admin", "general_manager"),
     categoryController.createCategory
   );
 
@@ -18,12 +18,12 @@ router
   .get(categoryController.getCategoryById)
   .put(
     protect,
-    restrictTo("admin", "general_manger"),
+    restrictTo("admin", "general_manager"),
     categoryController.updateCategory
   )
   .delete(
     protect,
-    restrictTo("admin", "general_manger"),
+    restrictTo("admin", "general_manager"),
     categoryController.deleteCategory
   );
 

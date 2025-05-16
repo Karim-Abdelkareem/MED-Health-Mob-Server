@@ -10,33 +10,33 @@ router
   .route("/")
   .post(
     // protect,
-    // restrictTo("admin", "genegeneral_manger"),
+    // restrictTo("admin", "general_manager"),
     validate(userValidationSchema),
     userController.createUser
   )
   .get(
     protect,
-    restrictTo("admin", "general_manger"),
+    restrictTo("admin", "general_manager"),
     userController.getAllUsers
   );
 
 router
   .route("/:id")
-  .get(protect, restrictTo("admin", "general_manger"), userController.getUser)
+  .get(protect, restrictTo("admin", "general_manager"), userController.getUser)
   .patch(
     protect,
-    restrictTo("admin", "general_manger"),
+    restrictTo("admin", "general_manager"),
     validate(userValidationSchema),
     userController.updateUser
   )
   .delete(
     protect,
-    restrictTo("admin", "general_manger"),
+    restrictTo("admin", "general_manager"),
     userController.deleteUser
   )
   .post(
     protect,
-    restrictTo("admin", "general_manger"),
+    restrictTo("admin", "general_manager"),
     userController.activeUser
   );
 

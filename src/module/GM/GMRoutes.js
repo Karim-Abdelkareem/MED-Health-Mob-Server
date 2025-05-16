@@ -5,7 +5,7 @@ import { protect, restrictTo } from "../../middleware/authentication.js";
 const router = express.Router();
 
 router.use(protect);
-router.use(restrictTo("admin", "general_manger"));
+router.use(restrictTo("admin", "general_manager"));
 
 router
   .route("/users")
