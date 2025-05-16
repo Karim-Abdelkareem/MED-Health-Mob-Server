@@ -12,7 +12,7 @@ router.get("/", productController.getAllProducts);
 router.post(
   "/",
   protect,
-  restrictTo("admin", "general_manger"),
+  restrictTo("admin", "general_manager"),
   upload.single("image"),
   productController.createProduct
 );
@@ -24,7 +24,7 @@ router.get("/:id", productController.getProductById);
 router.patch(
   "/:id",
   protect,
-  restrictTo("admin", "general_manger"),
+  restrictTo("admin", "general_manager"),
   productController.updateProduct
 );
 
@@ -32,7 +32,7 @@ router.patch(
 router.delete(
   "/:id",
   protect,
-  restrictTo("admin", "general_manger"),
+  restrictTo("admin", "general_manager"),
   productController.deleteProduct
 );
 

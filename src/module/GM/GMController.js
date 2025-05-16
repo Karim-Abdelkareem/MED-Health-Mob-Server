@@ -4,7 +4,7 @@ import User from "../user/userModel.js";
 import Order from "../order/orderModel.js";
 
 export const getGMUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find({ role: "general_manger" });
+  const users = await User.find({ role: "general_manager" });
 
   res.status(200).json({
     status: "success",
