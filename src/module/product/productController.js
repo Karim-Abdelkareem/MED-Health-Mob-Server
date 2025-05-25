@@ -13,7 +13,7 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
     .search()
     .fields();
   let result = await features.mongooseQuery;
-  let hasNextPage = result.length === 20;
+  let hasNextPage = result.length === 2;
   if (hasNextPage) {
     return res.status(200).json({
       status: "success",
