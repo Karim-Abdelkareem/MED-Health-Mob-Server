@@ -2,7 +2,6 @@ import Product from "./productModel.js";
 import AppError from "../../utils/AppError.js";
 import catchAsync from "../../utils/catchAsync.js";
 import Features from "../../utils/Features.js";
-import cloudinary from "../../utils/cloudinary.js";
 import Category from "../category/categoryModel.js";
 
 export const getAllProducts = catchAsync(async (req, res, next) => {
@@ -44,7 +43,7 @@ export const getProductById = catchAsync(async (req, res, next) => {
 export const createProduct = catchAsync(async (req, res, next) => {
   const { name, description, price, quantity, category } = req.body;
 
-  let cate = await Category.findById(category);
+  const cate = await Category.findById(category);
   if (!cate) {
     return next(new AppError(404, "Category not found"));
   }
@@ -53,32 +52,17 @@ export const createProduct = catchAsync(async (req, res, next) => {
     return res.status(400).json({ error: "Product image is required" });
   }
 
-  try {
-    const result = await new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        { folder: "products" },
-        (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        }
-      );
-      uploadStream.end(req.file.buffer);
-    });
+  const product = new Product({
+    name,
+    category,
+    description,
+    price,
+    quantity,
+    image: req.file.path,
+  });
 
-    const product = new Product({
-      name,
-      category,
-      description,
-      price,
-      quantity,
-      image: result.secure_url,
-    });
-
-    await product.save();
-    res.status(201).json({ status: "success", data: product });
-  } catch (error) {
-    return next(new AppError(500, error.message));
-  }
+  await product.save();
+  res.status(201).json({ status: "success", data: product });
 });
 
 export const updateProduct = catchAsync(async (req, res, next) => {

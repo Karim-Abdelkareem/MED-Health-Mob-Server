@@ -3,15 +3,18 @@ import * as userController from "./userController.js";
 import { protect, restrictTo } from "../../middleware/authentication.js";
 import { userValidationSchema } from "./userValidation.js";
 import validate from "../../middleware/validate.js";
-
+import { upload } from "../../config/cloudinary.js";
 const router = express.Router();
 
+router.route("/");
 router
   .route("/")
   .post(
-    // protect,
-    // restrictTo("admin", "general_manager"),
-    validate(userValidationSchema),
+    upload.fields([
+      { name: "doctorId", maxCount: 1 },
+      { name: "commercialRegister", maxCount: 1 },
+      { name: "taxRecord", maxCount: 1 },
+    ]),
     userController.createUser
   )
   .get(
@@ -26,7 +29,6 @@ router
   .patch(
     protect,
     restrictTo("admin", "general_manager"),
-    validate(userValidationSchema),
     userController.updateUser
   )
   .delete(

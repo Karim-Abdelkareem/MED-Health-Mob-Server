@@ -1,7 +1,6 @@
 import User from "./userModel.js";
 import AppError from "../../utils/AppError.js";
 import catchAsync from "../../utils/catchAsync.js";
-import { uploadBufferToCloudinary } from "../../utils/uploadToCloudinary.js";
 
 // export const createUser = catchAsync(async (req, res, next) => {
 //   let user = await userModel.findOne({ username: req.body.username });
@@ -31,22 +30,15 @@ export const createUser = catchAsync(async (req, res, next) => {
     role,
     active,
   } = req.body;
+
   const doctorIdFile = req.files?.doctorId?.[0];
   const commercialFile = req.files?.commercialRegister?.[0];
   const taxRecordFile = req.files?.taxRecord?.[0];
 
-  // Upload if present, else set as null or empty string
-  const doctorIdUrl = doctorIdFile
-    ? await uploadBufferToCloudinary(doctorIdFile.buffer, "user_documents")
-    : undefined;
+  const doctorIdUrl = doctorIdFile?.path;
+  const commercialRegisterUrl = commercialFile?.path;
+  const taxRecordUrl = taxRecordFile?.path;
 
-  const commercialRegisterUrl = commercialFile
-    ? await uploadBufferToCloudinary(commercialFile.buffer, "user_documents")
-    : undefined;
-
-  const taxRecordUrl = taxRecordFile
-    ? await uploadBufferToCloudinary(taxRecordFile.buffer, "user_documents")
-    : undefined;
   const user = new User({
     username,
     email,
@@ -61,7 +53,9 @@ export const createUser = catchAsync(async (req, res, next) => {
     role,
     active,
   });
+
   await user.save();
+
   res.status(201).json({
     status: "success",
     data: {

@@ -5,7 +5,7 @@ import {
   authValidationSchema,
   loginValidationSchema,
 } from "./authValidation.js";
-import upload from "../../middleware/multer.js";
+import { upload } from "../../config/cloudinary.js";
 
 const router = express.Router();
 

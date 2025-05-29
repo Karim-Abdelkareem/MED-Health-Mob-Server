@@ -2,7 +2,6 @@ import User from "../user/userModel.js";
 import jwt from "jsonwebtoken";
 import AppError from "../../utils/AppError.js";
 import catchAsync from "../../utils/catchAsync.js";
-import { uploadBufferToCloudinary } from "../../utils/uploadToCloudinary.js";
 
 export const register = catchAsync(async (req, res, next) => {
   const {
@@ -16,22 +15,16 @@ export const register = catchAsync(async (req, res, next) => {
     role,
   } = req.body;
 
+  console.log(req.body);
+
   const user = await User.findOne({ username: req.body.username });
   if (user) {
     return next(new AppError("Username already exists", 400));
   }
-  const doctorIdUrl = await uploadBufferToCloudinary(
-    req.files["doctorId"][0].buffer,
-    "user_documents"
-  );
-  const commercialRegisterUrl = await uploadBufferToCloudinary(
-    req.files["commercialRegister"][0].buffer,
-    "user_documents"
-  );
-  const taxRecordUrl = await uploadBufferToCloudinary(
-    req.files["taxRecord"][0].buffer,
-    "user_documents"
-  );
+  const doctorIdUrl = req.files?.doctorId?.[0]?.path;
+  const commercialRegisterUrl = req.files?.commercialRegister?.[0]?.path;
+  const taxRecordUrl = req.files?.taxRecord?.[0]?.path;
+
   const newUser = new User({
     username,
     email,

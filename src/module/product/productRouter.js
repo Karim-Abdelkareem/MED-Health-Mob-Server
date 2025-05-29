@@ -1,8 +1,7 @@
 import express from "express";
 import * as productController from "./productController.js";
 import { protect, restrictTo } from "../../middleware/authentication.js";
-import upload from "../../middleware/multer.js";
-
+import { upload } from "../../config/cloudinary.js";
 const router = express.Router();
 
 // Route to get all products
@@ -25,6 +24,7 @@ router.patch(
   "/:id",
   protect,
   restrictTo("admin", "general_manager"),
+  upload.single("image"),
   productController.updateProduct
 );
 
