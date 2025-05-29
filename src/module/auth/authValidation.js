@@ -6,6 +6,10 @@ export const authValidationSchema = Joi.object({
     "any.required": "Username is required",
     "string.pattern.base": "Username must not contain spaces",
   }),
+  email: Joi.string().email().required().messages({
+    "string.empty": "Email is required",
+    "any.required": "Email is required",
+  }),
   password: Joi.string()
     .required()
     .pattern(

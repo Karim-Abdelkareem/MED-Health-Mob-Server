@@ -5,8 +5,16 @@ import catchAsync from "../../utils/catchAsync.js";
 import { uploadBufferToCloudinary } from "../../utils/uploadToCloudinary.js";
 
 export const register = catchAsync(async (req, res, next) => {
-  const { username, password, pharmacyName, location, address, city, role } =
-    req.body;
+  const {
+    username,
+    email,
+    password,
+    pharmacyName,
+    location,
+    address,
+    city,
+    role,
+  } = req.body;
 
   const user = await User.findOne({ username: req.body.username });
   if (user) {
@@ -26,6 +34,7 @@ export const register = catchAsync(async (req, res, next) => {
   );
   const newUser = new User({
     username,
+    email,
     password,
     pharmacyName,
     location,
