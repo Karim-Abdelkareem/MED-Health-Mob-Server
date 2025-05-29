@@ -15,8 +15,6 @@ export const register = catchAsync(async (req, res, next) => {
     role,
   } = req.body;
 
-  console.log(req.body);
-
   const user = await User.findOne({ username: req.body.username });
   if (user) {
     return next(new AppError("Username already exists", 400));

@@ -109,17 +109,10 @@ export const updateUser = catchAsync(async (req, res, next) => {
 
 export const deleteUser = catchAsync(async (req, res, next) => {
   let user = await User.findByIdAndDelete(req.params.id);
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
   if (!user) {
     return next(new AppError("No user found with that ID", 404));
   }
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
+  res.status(200).json("success");
 });
 
 export const activeUser = catchAsync(async (req, res, next) => {
