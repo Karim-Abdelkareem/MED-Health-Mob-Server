@@ -24,6 +24,12 @@ export const register = catchAsync(async (req, res, next) => {
   const commercialRegisterUrl = req.files?.commercialRegister?.[0]?.path;
   const taxRecordUrl = req.files?.taxRecord?.[0]?.path;
 
+  if (role === "user" || !role) {
+    if (!doctorIdUrl || !commercialRegisterUrl || !taxRecordUrl) {
+      return next(new AppError("Please upload all required documents", 400));
+    }
+  }
+
   const newUser = new User({
     username,
     email,

@@ -92,12 +92,27 @@ export const createProduct = catchAsync(async (req, res, next) => {
 
 export const updateProduct = catchAsync(async (req, res, next) => {
   const id = req.params.id;
+
+  if (req.body.category) {
+    const cate = await Category.findById(req.body.category);
+    if (!cate) {
+      return next(new AppError(404, "Category not found"));
+    }
+  }
+
+  if (req.file) {
+    req.body.image = req.file.path;
+  }
+
   const product = await Product.findByIdAndUpdate(id, req.body, {
     new: true,
+    runValidators: true,
   });
+
   if (!product) {
     return next(new AppError(404, "Product not found"));
   }
+
   res.json({
     status: "success",
     data: product,
@@ -119,9 +134,11 @@ export const deleteProduct = catchAsync(async (req, res, next) => {
 export const getProductByCategoryId = catchAsync(async (req, res, next) => {
   const id = req.params.id;
   const products = await Product.find({ category: id });
-  if (!products) {
-    return next(new AppError(404, "Products not found"));
+
+  if (!products.length) {
+    return next(new AppError(404, "No products found for this category"));
   }
+
   res.json({
     status: "success",
     data: products,
