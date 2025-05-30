@@ -5,6 +5,30 @@ import Features from "../../utils/Features.js";
 import Category from "../category/categoryModel.js";
 
 export const getAllProducts = catchAsync(async (req, res, next) => {
+  // Default page size (limit)
+  const limit = parseInt(req.query.limit, 10) || 20;
+  const page = parseInt(req.query.page, 10) || 1;
+
+  // Build base query (without pagination)
+  let baseQuery = Product.find().populate("category", "name slug");
+
+  // Apply filter, search, and sort on baseQuery (same as in Features)
+  // Here, I'm assuming you have separate methods or you can replicate the logic,
+  // but for the sake of example, let's just do a count after filters applied
+
+  // Use Features class to apply filters (without pagination)
+  let featuresForCount = new Features(baseQuery, req.query)
+    .filter()
+    .search()
+    .sort();
+
+  // Get total count of filtered documents
+  const totalDocs = await featuresForCount.mongooseQuery.countDocuments();
+
+  // Calculate total pages
+  const totalPages = Math.ceil(totalDocs / limit);
+
+  // Now apply full features including pagination and fields
   let features = new Features(
     Product.find().populate("category", "name slug"),
     req.query
@@ -14,19 +38,17 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
     .sort()
     .search()
     .fields();
+
   let result = await features.mongooseQuery;
-  let hasNextPage = result.length === 20;
-  if (hasNextPage) {
-    return res.status(200).json({
-      status: "success",
-      page: features.page,
-      nextPage: features.page + 1,
-      data: result,
-    });
-  }
-  res.json({
+
+  // Check if there is a next page
+  const hasNextPage = page < totalPages;
+
+  res.status(200).json({
     status: "success",
-    page: features.page,
+    page,
+    totalPages,
+    nextPage: hasNextPage ? page + 1 : null,
     data: result,
   });
 });
