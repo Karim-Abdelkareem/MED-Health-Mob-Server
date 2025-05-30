@@ -11,7 +11,7 @@ router.get("/", restrictTo("admin"), orderController.getAllOrders);
 router.get("/:id", restrictTo("admin"), orderController.getOrder);
 router.patch("/:id", restrictTo("admin"), orderController.updateOrderStatus);
 router.delete("/:id", restrictTo("admin"), orderController.deleteOrder);
-router.get("/user", orderController.getUserOrders);
+router.get("/user/last", protect, orderController.getUserOrders);
 router.get(
   "/status/:status",
   restrictTo("admin"),
