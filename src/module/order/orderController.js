@@ -27,6 +27,7 @@ export const createOrder = catchAsync(async (req, res, next) => {
         shippingAddress: req.body.shippingAddress, // change to user address in the future
         phone: req.body.phone,
       });
+      await Cart.findByIdAndDelete(cartId);
       break;
     case "card":
       //do the banking process here
@@ -40,6 +41,8 @@ export const createOrder = catchAsync(async (req, res, next) => {
         shippingAddress: req.body.shippingAddress, // change to user address in the future
         phone: req.body.phone,
       });
+      await Cart.findByIdAndDelete(cartId);
+
       // else
       // return next(new AppErrror("Payment failed", 400));
       break;
@@ -59,6 +62,7 @@ export const createOrder = catchAsync(async (req, res, next) => {
         phone: req.body.phone,
         paymentDate: req.body.paymentDate,
       });
+      await Cart.findByIdAndDelete(cartId);
       break;
     default:
       return next(new AppErrror("Invalid payment method", 400));
