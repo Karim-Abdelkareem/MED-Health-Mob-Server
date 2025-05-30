@@ -11,7 +11,6 @@ const router = express.Router();
 
 router.post(
   "/register",
-  validate(authValidationSchema),
   upload.fields([
     { name: "doctorId", maxCount: 1 },
     { name: "commercialRegister", maxCount: 1 },
