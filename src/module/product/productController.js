@@ -5,14 +5,17 @@ import Features from "../../utils/Features.js";
 import Category from "../category/categoryModel.js";
 
 export const getAllProducts = catchAsync(async (req, res, next) => {
-  let features = new Features(Product.find(), req.query)
+  let features = new Features(
+    Product.find().populate("category", "name slug"),
+    req.query
+  )
     .pagination()
     .filter()
     .sort()
     .search()
     .fields();
   let result = await features.mongooseQuery;
-  let hasNextPage = result.length === 2;
+  let hasNextPage = result.length === 20;
   if (hasNextPage) {
     return res.status(200).json({
       status: "success",

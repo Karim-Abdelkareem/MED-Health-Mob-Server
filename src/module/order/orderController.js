@@ -25,6 +25,7 @@ export const createOrder = catchAsync(async (req, res, next) => {
         status: "pending",
         paymentMethod: req.body.paymentMethod,
         shippingAddress: req.body.shippingAddress, // change to user address in the future
+        phone: req.body.phone,
       });
       break;
     case "card":
@@ -37,12 +38,17 @@ export const createOrder = catchAsync(async (req, res, next) => {
         status: "pending",
         paymentMethod: req.body.paymentMethod,
         shippingAddress: req.body.shippingAddress, // change to user address in the future
+        phone: req.body.phone,
       });
       // else
       // return next(new AppErrror("Payment failed", 400));
       break;
     case "later":
+      if (!req.body.paymentDate) {
+        return next(new AppErrror("Payment date is required", 400));
+      }
       user.debt += cart.totalPrice;
+      await user.save();
       order = await Order.create({
         user: userId,
         cart: cartId,
@@ -50,6 +56,8 @@ export const createOrder = catchAsync(async (req, res, next) => {
         status: "pending",
         paymentMethod: req.body.paymentMethod,
         shippingAddress: req.body.shippingAddress, // change to user address in the future
+        phone: req.body.phone,
+        paymentDate: req.body.paymentDate,
       });
       break;
     default:

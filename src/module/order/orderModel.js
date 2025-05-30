@@ -29,6 +29,13 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    phone: {
+      type: String,
+      required: true,
+    },
+    paymentDate: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

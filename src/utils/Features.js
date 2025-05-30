@@ -7,9 +7,9 @@ export default class Features {
   pagination() {
     let page = this.queryString.page * 1 || 1;
     if (this.queryString.page * 1 <= 0) page = 1;
-    let skip = (page - 1) * 2;
+    let skip = (page - 1) * 20;
     this.page = page;
-    this.mongooseQuery = this.mongooseQuery.skip(skip).limit(2);
+    this.mongooseQuery = this.mongooseQuery.skip(skip).limit(20);
     return this;
   }
 
